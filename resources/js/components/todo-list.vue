@@ -1,5 +1,4 @@
 <template>
-    <div class="centerer">
         <div class="todo__box">
             <div class="todo__controls">
                 <h1 class="text-grey-darkest">Juan's Todo List</h1>
@@ -15,7 +14,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
