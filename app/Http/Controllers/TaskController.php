@@ -3,6 +3,8 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use Illuminate\Http\Request;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class TaskController extends Controller
 {
@@ -30,6 +32,11 @@ class TaskController extends Controller
         ]);
 
         $todo = Task::create($data);
+        
+        //log this transaction
+        $orderLog = new Logger('api');
+        $orderLog->pushHandler(new StreamHandler(storage_path('logs/fileinvite.log')), Logger::INFO);
+        $orderLog->info('action: create | id: '.$todo->id.' | text: "'.$request->text.'" | finished: '.$request->finished);
 
         return response($todo, 201);
     }
@@ -61,6 +68,11 @@ class TaskController extends Controller
 
         $todo->update($data);
 
+        //log this transaction
+        $orderLog = new Logger('api');
+        $orderLog->pushHandler(new StreamHandler(storage_path('logs/fileinvite.log')), Logger::INFO);
+        $orderLog->info('action: update | id: '.$todo->id.' | text: "'.$request->text.'" | finished: '.$request->finished);
+
         return response($todo, 200);
     }
 
@@ -74,6 +86,11 @@ class TaskController extends Controller
     public function destroy(Task $todo)
     {
         $todo->delete();
+        
+        //log this transaction
+        $orderLog = new Logger('api');
+        $orderLog->pushHandler(new StreamHandler(storage_path('logs/fileinvite.log')), Logger::INFO);
+        $orderLog->info('action: delete | id: '.$todo->id.' | text: "'.$todo->text.'" | finished: '.$todo->finished);
 
         return response('Deleted Succesfully', 200);
     }
